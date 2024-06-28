@@ -14,6 +14,7 @@ namespace pv
     byte m_incomingByte;
     byte m_incomingBytePrev;
     SerialFeedback m_newFeedback;
+    SerialFeedback m_feedback;
 
     void ToggleRelayPin(int dt)
     {
@@ -39,6 +40,11 @@ namespace pv
       Off()
       {
         ToggleRelayPin(Settings::offDelayMs);
+      }
+
+      SerialFeedback getFeedback()
+      {
+        return m_feedback;
       }
 
       void Send(int16_t uSteer, int16_t uSpeed)
@@ -88,19 +94,18 @@ namespace pv
               // Check validity of the new data
               if (m_newFeedback.start == Settings::startFrame && checksum == m_newFeedback.checksum) {
                   // Copy the new data
-                  SerialFeedback feedback;
-                  memcpy(&feedback, &m_newFeedback, sizeof(SerialFeedback));
+                  memcpy(&m_feedback, &m_newFeedback, sizeof(SerialFeedback));
 
                   // Print data to built-in Serial
-                  Serial.print("1: ");   Serial.print(feedback.cmd1);
-                  Serial.print(" 2: ");  Serial.print(feedback.cmd2);
-                  Serial.print(" 3: ");  Serial.print(feedback.speedR_meas);
-                  Serial.print(" 4: ");  Serial.print(feedback.speedL_meas);
-                  Serial.print(" 5: ");  Serial.print(feedback.batVoltage);
-                  Serial.print(" 6: ");  Serial.print(feedback.boardTemp);
-                  Serial.print(" 7: ");  Serial.println(feedback.cmdLed);
+                  //Serial.print("1: ");   Serial.print(feedback.cmd1);
+                  //Serial.print(" 2: ");  Serial.print(feedback.cmd2);
+                  //Serial.print(" 3: ");  Serial.print(feedback.speedR_meas);
+                  //Serial.print(" 4: ");  Serial.print(feedback.speedL_meas);
+                  //Serial.print(" 5: ");  Serial.print(feedback.batVoltage);
+                  //Serial.print(" 6: ");  Serial.print(feedback.boardTemp);
+                  //Serial.print(" 7: ");  Serial.println(feedback.cmdLed);
               } else {
-                Serial.println("Non-valid data skipped");
+                //Serial.println("Non-valid data skipped");
               }
               m_idx = 0;    // Reset the index (it prevents to enter in this if condition in the next cycle)
           }

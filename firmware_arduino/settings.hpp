@@ -19,7 +19,7 @@ namespace pv
   int Settings::relayMidPin = 51;
   int Settings::relayRearPin = 53;
   int Settings::onDelayMs = 50;
-  int Settings::offDelayMs = 100;
+  int Settings::offDelayMs = 200;
   uint16_t Settings::startFrame = 0xABCD;
   uint32_t Settings::hoverSerialBaud = 115200;
   uint32_t Settings::serialBaud = 115200;
