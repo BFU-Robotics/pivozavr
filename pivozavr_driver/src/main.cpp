@@ -27,7 +27,7 @@ class WheelDriver : public rclcpp::Node
 
         m_encoders_pub = this->create_publisher<pivozavr_interfaces::msg::WheelInfo>("wheel_velocities", 10);
 		m_power_pub = this->create_publisher<std_msgs::msg::Bool>("power", 10);
-        m_encoders_timer = this->create_wall_timer(1s, std::bind(&WheelDriver::encoders_callback, this));
+        m_encoders_timer = this->create_wall_timer(10ms, std::bind(&WheelDriver::encoders_callback, this));
 		m_power_timer = this->create_wall_timer(1s, std::bind(&WheelDriver::power_callback, this));
 
         m_wheel_commands_sub = this->create_subscription<pivozavr_interfaces::msg::WheelInfo>(
@@ -55,12 +55,12 @@ class WheelDriver : public rclcpp::Node
   private:
     void wheel_commands(const pivozavr_interfaces::msg::WheelInfo & msg)
     {
-        RCLCPP_INFO(this->get_logger(), "cmd %lf", msg.fl);
+        /*RCLCPP_INFO(this->get_logger(), "cmd %lf", msg.fl);
         RCLCPP_INFO(this->get_logger(), "%lf", msg.fr);
         RCLCPP_INFO(this->get_logger(), "%lf", msg.ml);
         RCLCPP_INFO(this->get_logger(), "%lf", msg.mr);
         RCLCPP_INFO(this->get_logger(), "%lf", msg.rl);
-        RCLCPP_INFO(this->get_logger(), "%lf", msg.rr);
+        RCLCPP_INFO(this->get_logger(), "%lf", msg.rr);*/
 
         {
             std::lock_guard<std::mutex> lock(m_mutex);
@@ -109,12 +109,12 @@ class WheelDriver : public rclcpp::Node
         std::vector<int16_t> data = m_modbus->ReadAnalogInput(0x01, 0x0001, 6);
 		if(data.size() > 0)
 		{
-            std::cerr << "FR " << rpmToRads(data[0]) << std::endl;
+            /*std::cerr << "FR " << rpmToRads(data[0]) << std::endl;
             std::cerr << "FL " << rpmToRads(data[1]) << std::endl;
             std::cerr << "MR " << rpmToRads(data[2]) << std::endl;
             std::cerr << "ML " << rpmToRads(data[3]) << std::endl;
             std::cerr << "RR " << rpmToRads(data[4]) << std::endl;
-            std::cerr << "RL " << rpmToRads(data[5]) << std::endl;
+            std::cerr << "RL " << rpmToRads(data[5]) << std::endl;*/
 
 	    	auto encoders_msg = pivozavr_interfaces::msg::WheelInfo();
             encoders_msg.fl = rpmToRads(data[1]);
@@ -125,7 +125,7 @@ class WheelDriver : public rclcpp::Node
             encoders_msg.rr = rpmToRads(data[4]);
             m_encoders_pub->publish(encoders_msg);
 		}
-        std::cerr << "===" << std::endl;
+        //std::cerr << "===" << std::endl;
     }
 
 	void power_callback()

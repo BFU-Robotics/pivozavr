@@ -86,14 +86,6 @@ void loop(void)
     bridgeMid.Receive();
     bridgeRear.Receive();
 
-    // Send commands
-    if (iTimeSend > timeNow) return;
-    iTimeSend = timeNow + pv::Settings::timeSend;
-    
-    bridgeFront.Send(-regBank.get(40001), -regBank.get(40002));
-    bridgeMid.Send(-regBank.get(40003), -regBank.get(40004));
-    bridgeRear.Send(-regBank.get(40005), -regBank.get(40006));
-
     pv::SerialFeedback feedbackFront = bridgeFront.getFeedback();
     regBank.set(30001, -(word) feedbackFront.speedL_meas );
     regBank.set(30002, (word) feedbackFront.speedR_meas );
@@ -103,6 +95,15 @@ void loop(void)
     pv::SerialFeedback feedbackRear = bridgeRear.getFeedback();
     regBank.set(30005, -(word) feedbackRear.speedL_meas );
     regBank.set(30006, (word) feedbackRear.speedR_meas );
+
+    // Send commands
+    if (iTimeSend <= timeNow){
+    iTimeSend = timeNow + pv::Settings::timeSend;
+    
+    bridgeFront.Send(-regBank.get(40001), -regBank.get(40002));
+    bridgeMid.Send(-regBank.get(40003), -regBank.get(40004));
+    bridgeRear.Send(-regBank.get(40005), -regBank.get(40006));
+    }
   }
 
   slave.run(); 

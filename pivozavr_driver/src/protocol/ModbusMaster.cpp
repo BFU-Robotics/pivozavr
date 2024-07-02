@@ -49,7 +49,6 @@ namespace robot::protocol
 
             crc = Modbus_crc16(rbuf, 2*count + 3);
             uint16_t r_crc = rbuf[2*count+3] | (rbuf[2*count+4] << 8);
-            std::cout << crc << " " << r_crc << std::endl;
             if(crc == r_crc)
                 {
             //printf("Receive data\n");
