@@ -33,6 +33,11 @@ void setup()
   regBank.add(30006);
   regBank.add(30007);
   regBank.add(30008);
+  regBank.add(30009);
+  regBank.add(30010);
+  regBank.add(30011);
+  regBank.add(30012);
+
   regBank.add(40001);
   regBank.add(40002);
   regBank.add(40003);
@@ -89,20 +94,29 @@ void loop(void)
     pv::SerialFeedback feedbackFront = bridgeFront.getFeedback();
     regBank.set(30001, -(word) feedbackFront.speedL_meas );
     regBank.set(30002, (word) feedbackFront.speedR_meas );
+    regBank.set(30007, (word) feedbackFront.batVoltage );
+    regBank.set(30008, (word) feedbackFront.boardTemp );
+
     pv::SerialFeedback feedbackMid = bridgeMid.getFeedback();
     regBank.set(30003, -(word) feedbackMid.speedL_meas );
     regBank.set(30004, (word) feedbackMid.speedR_meas );
+    regBank.set(30009, (word) feedbackMid.batVoltage );
+    regBank.set(30010, (word) feedbackMid.boardTemp );
+
     pv::SerialFeedback feedbackRear = bridgeRear.getFeedback();
     regBank.set(30005, -(word) feedbackRear.speedL_meas );
     regBank.set(30006, (word) feedbackRear.speedR_meas );
+    regBank.set(30011, (word) feedbackRear.batVoltage );
+    regBank.set(30012, (word) feedbackRear.boardTemp );
 
     // Send commands
-    if (iTimeSend <= timeNow){
-    iTimeSend = timeNow + pv::Settings::timeSend;
-    
-    bridgeFront.Send(-regBank.get(40001), -regBank.get(40002));
-    bridgeMid.Send(-regBank.get(40003), -regBank.get(40004));
-    bridgeRear.Send(-regBank.get(40005), -regBank.get(40006));
+    if (iTimeSend <= timeNow)
+    {
+      iTimeSend = timeNow + pv::Settings::timeSend;
+      
+      bridgeFront.Send(-regBank.get(40001), -regBank.get(40002));
+      bridgeMid.Send(-regBank.get(40003), -regBank.get(40004));
+      bridgeRear.Send(-regBank.get(40005), -regBank.get(40006));
     }
   }
 

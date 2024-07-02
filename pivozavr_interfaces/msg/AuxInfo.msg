@@ -1,0 +1,6 @@
+float32 bat_bridge1
+float32 bat_bridge2
+float32 bat_bridge3
+float32 temp_bridge1
+float32 temp_bridge2
+float32 temp_bridge3
