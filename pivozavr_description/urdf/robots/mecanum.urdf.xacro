@@ -81,7 +81,63 @@
 
   <xacro:gnss/>
 
-  <!--<xacro:imu/>-->
+  <xacro:imu/>
+
+  <!-- For lidar begin-->
+  <!--<link name="rotation_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.04"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 .5 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="rotation_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="rotation_link"/>
+    <origin xyz="0.32 0.01 0.513"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="0.0" upper="3.141592" velocity="1"/>
+  </joint>-->
+
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.035" radius="0.02"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 .5 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.54" rpy="-0.01745 0 0"/> <!-- 0.029 z -->
+  </joint>
+  
+  <link name="openni_rgb_optical_frame">
+    <visual>
+      <geometry>
+        <cylinder length="0.035" radius="0.02"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 .5 0 1"/>
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="openni_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="openni_rgb_optical_frame"/>
+    <origin xyz="0.32 0.01 0.263" rpy="-1.5707 0 -1.5707"/> <!-- 0.029 z -->
+  </joint>
+
+  <!-- For lidar end-->
   
   <!--<xacro:generic_laser>
     <xacro:insert_block name="laser_pose" />
